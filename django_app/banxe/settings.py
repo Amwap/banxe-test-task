@@ -11,7 +11,7 @@ from pathlib import Path
 import os
 from datetime import timedelta
 
-BASE_DIR = Path(__file__).resolve().parent.parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent
  
 
 # Quick-start development settings - unsuitable for production
@@ -129,6 +129,10 @@ AUTHENTICATION_BACKENDS = [
 
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / "staticfiles"
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "mediafiles"
