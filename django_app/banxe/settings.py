@@ -19,9 +19,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY")
-
 DEBUG = bool(os.environ.get("DJANGO_DEBUG", True))
-
 ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS").split()
 
 # Application definition
@@ -36,7 +34,7 @@ INSTALLED_APPS = [
     'corsheaders',
     
     'apps.auth_app',
-    'apps.users_app'
+    'apps.users_app',
 ]
 
 MIDDLEWARE = [
@@ -51,7 +49,6 @@ MIDDLEWARE = [
 ]
 
 
-DOMAIN = os.environ.get("DJANGO_DOMAIN")
 
 ROOT_URLCONF = 'banxe.urls'
 
@@ -120,49 +117,24 @@ USE_I18N = True
 USE_TZ = True
 
 AUTH_USER_MODEL = 'users_app.User'
-AUTHENTICATION_BACKENDS = ('apps.users.auth_app.backends.AuthBackend',)
+AUTHENTICATION_BACKENDS = [
+        'apps.auth_app.backends.AuthBackend',
+    ]
 
-REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.IsAuthenticated',
-
-    ),
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
-    ),
-}
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
-STATIC_URL = '/django/static/'
+STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
-MEDIA_URL = "/django/media/"
+MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "mediafiles"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=2),
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
-    'AUTH_HEADER_TYPES': ('Bearer', ),
-}
-
-DJOSER = {
-    'USER_CREATE_PASSWORD_RETYPE': True,
-    'SEND_ACTIVATION_EMAIL': True,
-    'SET_PASSWORD_RETYPE': True,
-    'PASSWORD_RESET_CONFIRM_RETYPE': True,
-    # 'TOKEN_MODEL': None,  # We use only JWT
-    'ACTIVATION_URL': 'account/activation/{uid}/{token}',
-    'PASSWORD_RESET_CONFIRM_URL': 'password/reset/confirm/{uid}/{token}'
-}
-
-LONGPOOL_TIMEOUT = 30
 
 if os.environ.get('EMAIL_HOST_USER'):
     EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'

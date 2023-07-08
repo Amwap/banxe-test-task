@@ -8,7 +8,7 @@ from rest_framework.exceptions import ValidationError
 from apps.auth_app.models import UserManager
 
 
-class User(AbstractBaseUser, PermissionsMixin):
+class User(AbstractBaseUser, PermissionsMixin, models.Model):
     """ Auth model """
     username = models.CharField(_('Username'), max_length=255, unique=True)
     email = models.EmailField(_('Email'), null=True, blank=True)

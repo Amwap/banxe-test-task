@@ -1,6 +1,6 @@
 from django.urls import path, include
 
-# from apps.users.users_app.views import MeView, SwitchRoleView
+# from apps.users_app.views import MeView, SwitchRoleView
 
 urlpatterns = [
     # path('me/', MeView.as_view(), name='me'),

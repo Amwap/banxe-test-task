@@ -1,4 +1,4 @@
-from apps.users.users_app.models import User
+from apps.users_app.models import User
 from django.db.models import Q
 from django.contrib.auth.backends import ModelBackend
 import requests
