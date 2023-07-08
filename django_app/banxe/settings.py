@@ -32,9 +32,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'corsheaders',
+    'bootstrap4',
     
     'apps.auth_app',
     'apps.users_app',
+    'apps.wallet_app'
 ]
 
 MIDDLEWARE = [
