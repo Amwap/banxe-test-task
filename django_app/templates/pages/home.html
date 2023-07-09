@@ -4,13 +4,13 @@
 {% block content %}
 <div class="col-md-12 p-1 p-lg-3 row d-flex justify-content-between m-0">
     <div class="col-md-4">
-        <div class="card">
+        <div class="card mb-3">
           <div class="card-body d-flex justify-content-between align-items-between flex-row">
             <h4>{{ user.username }}</h4>
             <a href="{% url 'logout'%}" class="btn btn-info ml-auto">Logout</a>
           </div>
         </div>
-        <div class="card">
+        <div class="card mb-3">
             <div class="card-header d-flex justify-content-between">
                 <h2>Create transaction</h2>
             </div>
@@ -45,7 +45,7 @@
             </div>
         </div>
     </div>
-    <div class="col-md-8">
+    <div class="col-md-8 mb-3">
         <div class="card ">
             <div class="card-header d-flex justify-content-between">
                 <h2>Transaction list</h2>
