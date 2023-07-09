@@ -1,9 +1,7 @@
-from django.contrib.auth import login
-from django.shortcuts import redirect, render
 from apps.auth_app.forms import UserCreationForm
-from django.contrib.auth import authenticate, login
-from django.shortcuts import render, redirect
 from django.contrib import messages
+from django.contrib.auth import authenticate, login, logout
+from django.shortcuts import redirect, render
 
 
 def login_view(request):
@@ -28,3 +26,8 @@ def register(request):
     else:
         form = UserCreationForm()
     return render(request, 'registration/register.html', {'form': form})
+
+
+def logout_view(request):
+    logout(request)
+    return redirect('login')

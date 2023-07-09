@@ -123,7 +123,8 @@ AUTHENTICATION_BACKENDS = [
         'apps.auth_app.backends.AuthBackend',
     ]
 
-
+LOGIN_REDIRECT_URL = '/home/'
+LOGIN_URL = '/login/'
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
