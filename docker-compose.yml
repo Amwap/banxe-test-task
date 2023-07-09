@@ -14,6 +14,7 @@ services:
       dockerfile: Dockerfile.dev
     volumes:
       - ./django_app/:/home/django_app/
+      - staticfiles_volume:/home/django_app/staticfiles
     expose: 
       - 8000
 
@@ -28,8 +29,11 @@ services:
       dockerfile: Dockerfile.dev
     ports:
       - 80:80
+    volumes:
+      - staticfiles_volume:/home/django_app/staticfiles
     depends_on:
       - django_app
 
 volumes:
   postgres_data:
+  staticfiles_volume:
