@@ -19,9 +19,16 @@ class Wallet(models.Model):
 
 
 class Transaction(models.Model):
+    class Status(models.TextChoices):
+        CREATED = 'CREATED', 'Created'
+        CANCELED = 'CANCELED', 'Canceled'
+        ACCEPTED = 'ACCEPTED', 'Accepted'
+    
     wallet = models.ForeignKey(Wallet, verbose_name=_("Service wallet"), on_delete=models.CASCADE)
     recipient_address = models.CharField(_("Recipient address"), max_length=50)
-    amount = models.DecimalField(max_digits=20, decimal_places=10)
+    amount = models.DecimalField(_("Amount"), max_digits=20, decimal_places=10)
+    status = models.CharField(_("Status"), choices=Status.choices, default=Status.CREATED,  max_length=50)
+    created_at = models.DateTimeField(_("Created at"), default=timezone.now)
     
     def __str__(self) -> str:
         return f'{self.wallet.network} {self.wallet.currency}'
