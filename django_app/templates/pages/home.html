@@ -1,0 +1,59 @@
+{% extends 'base/base.html' %}
+{% load bootstrap4 %}
+
+{% block content %}
+<div class="col-md-12 p-5 row d-flex justify-content-between">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between">
+                <h2>Create transaction</h2>
+            </div>
+            <div class="card-body">
+                <form method="post" class=' d-flex flex-column justify-content-between'>
+                    {% csrf_token %}
+                    <div class="form-group d-flex flex-column mx-3 {% if form.username.errors %}has-error {% endif %}">
+                        <label>Wallet:</label>
+                        {% if form.wallet.errors %}
+                            {{form.wallet.errors}}
+                        {% endif %}
+                        {{ form.wallet }}
+                    </div>
+                    <div class="form-group d-flex flex-column mx-3 {% if form.recipient_address.errors %}has-error {% endif %}">
+                        <label>Recipient address:</label>
+                        {% if form.recipient_address.errors %}
+                            {{form.recipient_address.errors}}
+                        {% endif %}
+                        {{ form.recipient_address }}
+                    </div>
+                    <div class="form-group d-flex flex-column mx-3 {% if form.amount.errors %}has-error {% endif %}">
+                        <label>Amount:</label>
+                        {% if form.amount.errors %}
+                            {{form.amount.errors}}
+                        {% endif %}
+                        {{ form.amount }}
+                    </div>
+                    <div class="form-group d-flex flex-column mx-3 {% if form.amount.errors %}has-error {% endif %}">
+                        <button type="submit" class='btn btn-primary mt-2'>Create</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8">
+        <div class="card ">
+            <div class="card-header d-flex justify-content-between">
+                <h2>Transaction list</h2>
+            </div>
+            <div class="card-body">
+                asd
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    select{
+        padding: 4px 2px;
+    }
+</style>
+{% endblock content %}
+

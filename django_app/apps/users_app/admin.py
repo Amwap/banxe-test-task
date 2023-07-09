@@ -24,8 +24,4 @@ class UserAdmin(admin.ModelAdmin):
     search_fields = ('username', 'email')
     ordering = ('username',)
 
-# @admin.register(Profile)
-# class ProfileAdmin(admin.ModelAdmin):
-#     search_fields = ('id', 'first_name', 'last_name')
-#     list_display = ( "user", "first_name", "last_name", "balance",'role')
-#     list_editable = ('role', 'balance')
+
