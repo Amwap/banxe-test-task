@@ -18,14 +18,13 @@ class HomeView(TemplateView):
         context = self.get_context_data()
         form = TransactionForm(self.request.POST)
         if form.is_valid():
-            form.create()
+            form.create(user=request.user)
             return redirect(reverse('home'))
         else:
             context['form'] = form
             return render(request, self.template_name, context)
     
     def get(self, request):
-        
         context = self.get_context_data()
         transactions = Transaction.objects.all().order_by('-created_at')
         paginator = Paginator(transactions, 10)  # Show 10 transactions per page
@@ -33,11 +32,20 @@ class HomeView(TemplateView):
         page_obj = paginator.get_page(page_number)
         context['page_obj'] = page_obj
         context['form'] = TransactionForm()
+        context['request_user'] = request.user.pk
         return render(request, self.template_name, context)
-    
-    
+
+
+@login_required
 def cancel_transaction(request, pk):
     transaction = Transaction.objects.get(pk=pk)
     transaction.status = Transaction.Status.CANCELED
+    transaction.save()
+    return redirect('home')
+
+@login_required
+def approve_transaction(request, pk):
+    transaction = Transaction.objects.get(pk=pk)
+    transaction.status = Transaction.Status.APPROVED
     transaction.save()
     return redirect('home')

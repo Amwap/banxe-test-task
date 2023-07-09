@@ -2,7 +2,7 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 from apps.users_app.models import User
 from django.utils import timezone
-
+from apps.users_app.models import User
 
 class Wallet(models.Model):
     address = models.CharField(_("Address"), max_length=50)
@@ -22,8 +22,9 @@ class Transaction(models.Model):
     class Status(models.TextChoices):
         CREATED = 'CREATED', 'Created'
         CANCELED = 'CANCELED', 'Canceled'
-        ACCEPTED = 'ACCEPTED', 'Accepted'
+        APPROVED = 'APPROVED', 'Approved'
     
+    user = models.ForeignKey(User, verbose_name=_("User"), on_delete=models.CASCADE)
     wallet = models.ForeignKey(Wallet, verbose_name=_("Service wallet"), on_delete=models.CASCADE)
     recipient_address = models.CharField(_("Recipient address"), max_length=50)
     amount = models.DecimalField(_("Amount"), max_digits=20, decimal_places=10)

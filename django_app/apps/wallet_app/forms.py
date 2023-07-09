@@ -17,8 +17,9 @@ class TransactionForm(forms.ModelForm):
             'amount',
         ]
         
-    def create(self):
+    def create(self, user):
         return Transaction.objects.create(
+            user=user,
             wallet = self.cleaned_data['wallet'],
             recipient_address = self.cleaned_data['recipient_address'],
             amount = self.cleaned_data['amount'],

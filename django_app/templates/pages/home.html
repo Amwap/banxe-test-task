@@ -2,7 +2,7 @@
 {% load bootstrap4 %}
 
 {% block content %}
-<div class="col-md-12 p-5 row d-flex justify-content-between">
+<div class="col-md-12 p-1 p-lg-3 row d-flex justify-content-between m-0">
     <div class="col-md-4">
         <div class="card">
             <div class="card-header d-flex justify-content-between">
@@ -45,15 +45,17 @@
                 <h2>Transaction list</h2>
             </div>
             <div class="card-body">
-                <div class="container">
-                    <table class="table table-striped">
+                <div class="container overflow-auto">
+                    <table class="table table-striped text-nowrap">
                       <thead>
                         <tr>
                           <th>Wallet</th>
                           <th>Recipient Address</th>
                           <th>Amount</th>
                           <th>Created At</th>
-                          <th>Cancel</th>
+                          <th>Status</th>
+                          <th></th>
+                          <th></th>
                         </tr>
                       </thead>
                       <tbody>
@@ -62,37 +64,36 @@
                             <td>{{ transaction.wallet }}</td>
                             <td>{{ transaction.recipient_address }}</td>
                             <td>{{ transaction.amount }}</td>
-                            <td>{{ transaction.created_at|date:'d-m-Y i:s' }}</td>
+                            <td>{{ transaction.created_at|date:'d-m-Y H:i:s' }}</td>
+
+                            {% if transaction.status == transaction.Status.CANCELED %}
+                                <td class='text-danger'>{{ transaction.get_status_display }}</td>
+                            {% elif transaction.status == transaction.Status.APPROVED  %}
+                                <td class='text-success'>{{ transaction.get_status_display }}</td>
+                            {% else %}
+                                <td class='text-warning'>{{ transaction.get_status_display }}</td>
+                            {% endif %}
+
+
+
                             <td>
                                 {% if transaction.status == transaction.Status.CREATED %}   
                                     <button type="button" class="btn btn-danger btn-sm " data-toggle="modal" data-target="#cancelModal{{ transaction.pk }}">
                                         Cancel
                                     </button>
+                                    {% include 'modals/cancel_modal.html' with transaction=transaction %}
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if transaction.status == transaction.Status.CREATED and request_user != transaction.user.pk %}  
+                                    <button type="button" class="btn btn-success btn-sm " data-toggle="modal" data-target="#approveModal{{ transaction.pk }}">
+                                        Approve
+                                    </button>
+                                    {% include 'modals/approve_modal.html' with transaction=transaction %}
                                 {% endif %}
                             </td>
                           </tr>
-                          <!-- Modal for cancel confirmation -->
-                          {% if transaction.status == transaction.Status.CREATED %}
-                            <div class="modal fade" id="cancelModal{{ transaction.pk }}" tabindex="-1" role="dialog" aria-labelledby="cancelModalLabel{{ transaction.pk }}" aria-hidden="true">
-                                <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                    <h5 class="modal-title" id="cancelModalLabel{{ transaction.pk }}">Cancel Transaction</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                    </div>
-                                    <div class="modal-body">
-                                    <p>Are you sure you want to cancel this transaction?</p>
-                                    </div>
-                                    <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                    <a href="{% url 'cancel_transaction' transaction.pk %}" class="btn btn-danger">Cancel Transaction</a>
-                                    </div>
-                                </div>
-                                </div>
-                            </div>
-                          {% endif %}
+                         
                           <!-- End of modal -->
                         {% empty %}
                           <tr>
@@ -101,42 +102,42 @@
                         {% endfor %}
                       </tbody>
                     </table>
-                    <div class="pagination justify-content-center">
-                        <ul class="pagination">
-                            {% if page_obj.has_previous %}
-                              <li class="page-item">
-                                <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
-                              </li>
-                            {% else %}
-                              <li class="page-item disabled">
-                                <span class="page-link">Previous</span>
-                              </li>
-                            {% endif %}
-                    
-                            {% for num in page_obj.paginator.page_range %}
-                              {% if page_obj.number == num %}
-                                <li class="page-item active">
-                                  <span class="page-link">{{ num }}</span>
-                                </li>
-                              {% else %}
-                                <li class="page-item">
-                                  <a class="page-link" href="?page={{ num }}">{{ num }}</a>
-                                </li>
-                              {% endif %}
-                            {% endfor %}
-                    
-                            {% if page_obj.has_next %}
-                              <li class="page-item">
-                                <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
-                              </li>
-                            {% else %}
-                              <li class="page-item disabled">
-                                <span class="page-link">Next</span>
-                              </li>
-                            {% endif %}
-                          </ul>
-                    </div>
                   </div>
+                  <div class="pagination justify-content-center mt-3">
+                    <ul class="pagination">
+                        {% if page_obj.has_previous %}
+                          <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+                          </li>
+                        {% else %}
+                          <li class="page-item disabled">
+                            <span class="page-link">Previous</span>
+                          </li>
+                        {% endif %}
+                
+                        {% for num in page_obj.paginator.page_range %}
+                          {% if page_obj.number == num %}
+                            <li class="page-item active">
+                              <span class="page-link">{{ num }}</span>
+                            </li>
+                          {% else %}
+                            <li class="page-item">
+                              <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                            </li>
+                          {% endif %}
+                        {% endfor %}
+                
+                        {% if page_obj.has_next %}
+                          <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+                          </li>
+                        {% else %}
+                          <li class="page-item disabled">
+                            <span class="page-link">Next</span>
+                          </li>
+                        {% endif %}
+                      </ul>
+                </div>
             </div>
         </div>
     </div>
