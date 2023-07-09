@@ -35,7 +35,7 @@ class HomeView(TemplateView):
         page_obj = paginator.get_page(page_number)
         context['page_obj'] = page_obj
         context['form'] = TransactionForm()
-        context['request_user'] = request.user.pk
+        context['request_user'] = request.user
         return render(request, self.template_name, context)
 
 
@@ -56,7 +56,7 @@ def approve_transaction(request, pk):
     }
     r = requests.post('https://api.mockfly.dev/mocks/55a12083-09da-45be-b7b3-2d4dca10c622/approve', data=transaction_data)
     data = json.loads(r.text)
-    if data.status == 'ok':
+    if data['status'] == 'ok':
         transaction.status = Transaction.Status.APPROVED
         transaction.save()
     return redirect('home')
