@@ -86,6 +86,23 @@ DATABASES = {
     }
 }
 
+CORS_ALLOWED_ORIGINS = [
+    'https://*.abb581e28f37.vps.myjino.ru',
+    'https://abb581e28f37.vps.myjino.ru',
+    'https://*.127.0.0.1',
+    'http://localhost:3000',
+    'http://localhost:8000',
+    'http://0.0.0.0:8000',
+    'http://0.0.0.0:8000'
+]
+CSRF_TRUSTED_ORIGINS = CORS_ALLOWED_ORIGINS
+
+CORS_ORIGIN_ALLOW_ALL = True
+
+CORS_ORIGIN_WHITELIST = (
+    'http://localhost:3000',
+    'http://127.0.0.1:3000',
+)
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
