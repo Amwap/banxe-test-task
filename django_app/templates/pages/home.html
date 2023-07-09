@@ -73,9 +73,6 @@
                             {% else %}
                                 <td class='text-warning'>{{ transaction.get_status_display }}</td>
                             {% endif %}
-
-
-
                             <td>
                                 {% if transaction.status == transaction.Status.CREATED %}   
                                     <button type="button" class="btn btn-danger btn-sm " data-toggle="modal" data-target="#cancelModal{{ transaction.pk }}">
@@ -93,7 +90,6 @@
                                 {% endif %}
                             </td>
                           </tr>
-                         
                           <!-- End of modal -->
                         {% empty %}
                           <tr>

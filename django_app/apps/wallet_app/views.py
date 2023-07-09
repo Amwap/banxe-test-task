@@ -7,6 +7,9 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from apps.wallet_app.models import Transaction
 from django.core.paginator import Paginator
+import requests
+import json
+
 
 @method_decorator(login_required, name='dispatch')
 class HomeView(TemplateView):
@@ -46,6 +49,14 @@ def cancel_transaction(request, pk):
 @login_required
 def approve_transaction(request, pk):
     transaction = Transaction.objects.get(pk=pk)
-    transaction.status = Transaction.Status.APPROVED
-    transaction.save()
+    transaction_data = {
+        'subaccountID': transaction.wallet.subaccount_id,
+        'recipient_address': transaction.recipient_address,
+        'amount': transaction.amount,
+    }
+    r = requests.post('https://api.mockfly.dev/mocks/55a12083-09da-45be-b7b3-2d4dca10c622/approve', data=transaction_data)
+    data = json.loads(r.text)
+    if data.status == 'ok':
+        transaction.status = Transaction.Status.APPROVED
+        transaction.save()
     return redirect('home')
