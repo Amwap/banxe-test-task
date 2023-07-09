@@ -14,12 +14,22 @@ services:
       dockerfile: Dockerfile.dev
     volumes:
       - ./django_app/:/home/django_app/
-    ports:
-      - 8005:8000
+    expose: 
+      - 8000
+
     env_file:
       - ./.env.dev
     depends_on:
       - postgres_app
+  
+  nginx_app:
+    build: 
+      context: ./nginx_app
+      dockerfile: Dockerfile.dev
+    ports:
+      - 80:80
+    depends_on:
+      - django_app
 
 volumes:
   postgres_data:
